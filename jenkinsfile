@@ -44,7 +44,7 @@ pipeline {
         } // End of deploy into kubectl
         stage('expose to service') { // expose into service with specific port 
             steps {
-                sh 'kubectl expose deployment mnpdbapiservice --port=8084 --target-port=8084  --name=mnpdbapi-service --type=ClusterIP'
+                sh 'kubectl expose deployment mnpdbapiservice-v1 --port=8084 --target-port=8084  --name=mnpdbapi-service --type=ClusterIP'
             } // End of step
         } // End of expose into service with specific port
         stage('patch IP to service') { // patch IP into service with specific port
