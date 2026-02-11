@@ -1,0 +1,56 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('sourcedownload') {
+            steps {
+                git credentialsId: 'msgreceiver', url: 'https://github.com/Ramesh14973/mnpapi.git'
+            } // End of steps
+        } // End of stage-sourcedownload
+        stage('mvn test') {
+            steps {
+                sh 'mvn test'
+            } // End of steps-test
+        } // End of stage mvn test
+        stage('mvn build') {
+            steps {
+                sh 'mvn clean install -DskipTests=true'
+            } // End of steps-clean and install
+        } // End of stage-build
+        stage('docker login') {
+            steps {
+                sh 'docker login -u "rameshsubramani" docker.io -p Ramesh!4973'
+            } // End of steps-clean and install
+        } // End of docker login
+        stage('create Dcoker Image') {
+            steps {
+                sh 'docker build -t mnpdbapiservice:latest .'
+            } // End of steps-clean and install
+        } // End of create dockerimage
+        stage('tag dockerimage') {
+            steps {
+                sh 'docker tag mnpdbapiservice:latest rameshsubramani/messagespark:latest'
+            } // End of step
+        } // End of tag dockerimage
+        stage('push dockerimage') {
+            steps {
+                sh 'docker push rameshsubramani/messagespark:latest'
+            } // End of step
+        } // End of push dockerimage into docker hub
+        stage('apply into kubectl') {
+            steps {
+                sh 'kubectl apply -f deployment.yaml'
+            } // End of step
+        } // End of deploy into kubectl
+        stage('expose to service') { // expose into service with specific port 
+            steps {
+                sh 'kubectl expose deployment mnpdbapiservice --port=8084 --target-port=8084  --name=mnpdbapi-service --type=ClusterIP'
+            } // End of step
+        } // End of expose into service with specific port
+        stage('patch IP to service') { // patch IP into service with specific port
+            steps {
+                sh 'kubectl patch svc mnpdbapi-service -p \'{"spec":{"externalIPs":["192.168.0.102"]}}\''
+            } // End of step
+        } // End of patch IP into service with specific port
+    } // End of stages
+} // End of pipeline
