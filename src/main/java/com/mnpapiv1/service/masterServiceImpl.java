@@ -32,12 +32,17 @@ public class masterServiceImpl implements masterService{
 
 	@Override
 	public String getRN(String msisdn) {
+		String strRN="999";
 		List<master> mastlist = null;
 		try {
 		mastlist = mastrepo.findByMsisdn(msisdn);
-		}catch(Exception e) {e.printStackTrace();}
+		strRN = mastlist.get(0).getRn();
+		}catch(Exception e) {
+			strRN="999";
+			e.printStackTrace();
+			}
 		
-		return mastlist.get(0).getRn();
+		return strRN;
 	} // End of getRN method
 
 	

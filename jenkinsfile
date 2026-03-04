@@ -37,6 +37,16 @@ pipeline {
                 sh 'docker push rameshsubramani/messagespark:latest'
             } // End of step
         } // End of push dockerimage into docker hub
+        stage('delete deployment from kubectl') {
+            steps {
+                sh 'kubectl delete deployment mnpdbapiservice-v1'
+            } // End of step
+        } // End of delete deployment from kubectl
+        stage('delete service from kubectl') {
+            steps {
+                sh 'kubectl delete svc mnpdbapi-service'
+            } // End of step
+        } // End of delete service from kubectl from kubectl
         stage('apply into kubectl') {
             steps {
                 sh 'kubectl apply -f deployment.yaml'
