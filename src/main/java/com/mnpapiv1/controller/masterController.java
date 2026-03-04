@@ -37,9 +37,9 @@ public class masterController {
 	@GetMapping("/getrn")
 	public String getRN(@RequestParam("msisdn") String msisdn) {
 		String strRN="999";
-		info("info ***************************"+msisdn);
-		strRN=mastserv.getRN(msisdn);
 		
+		strRN=mastserv.getRN(msisdn);
+		info("info ***************************"+msisdn +" strRN="+strRN);
 		return strRN;
 		
 	} // End of getRN
