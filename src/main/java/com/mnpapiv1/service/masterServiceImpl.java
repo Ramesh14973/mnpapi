@@ -39,7 +39,7 @@ public class masterServiceImpl implements masterService{
 		try {
 			
 			//mastrepo.findById(msisdn).orElseThrow()
-			master  = mastrepo.findByMsisdn(msisdn).orElseThrow(()-> new NoSuchCustomerExistsException("Unknown Mobile Number = " + msisdn));
+			master  = mastrepo.findByMsisdn(msisdn).orElseThrow(()->{ return new NoSuchCustomerExistsException("Unknown Mobile Number = " + msisdn);});
 			//master.orElseThrow(()-> {return new NoSuchCustomerExistsException("NO RN For This Mobile Number = " + msisdn);});
 		//strRN = mastlist.get(0).getRn();
 			strRN = master.getRn();
