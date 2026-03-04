@@ -46,7 +46,7 @@ pipeline {
             steps {
                 sh 'kubectl delete svc mnpdbapi-service'
             } // End of step
-        } // End of delete service from kubectl from kubectl
+        } // End of delete service from kubectl
         stage('apply into kubectl') {
             steps {
                 sh 'kubectl apply -f deployment.yaml'
